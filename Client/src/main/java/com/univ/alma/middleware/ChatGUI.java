@@ -1,129 +1,75 @@
 package com.univ.alma.middleware;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.rmi.Naming;
+import java.util.Vector;
+
 /**
  * Created by imadhy on 16/12/15.
  */
-import javax.swing.*;
-import javax.swing.border.*;
+public class ChatGUI extends JFrame {
+    private JPanel chatPanel;
+    private JButton connectButton;
+    private JTextField nnField;
+    private JTextField serverField;
+    private JLabel nnLabel;
+    private JLabel serverLabel;
+    private JLabel sujetLabel;
+    private JComboBox catList;
+    private JFrame frame;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.rmi.Naming;
-import java.util.*;
+    public static void main(String[] args) {
+        ChatGUI chatgui = new ChatGUI();
+    }
 
-public class ChatGUI{
-        private ChatClient client;
-        private ServerInterface server;
+    public ChatGUI () {
+        super("YouChat Connect to Server");
+        setContentPane(chatPanel);
+        pack();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
 
-        public void doConnect() {
+        connectButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){ doConnect();   }  });
+        serverField.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){ doConnect();   }  });
+    }
 
-            if (connect.getText().equals("Connect")) {
-                if (name.getText().length() < 2) {
-                    JOptionPane.showMessageDialog(frame, "You need to type a name.");
-                    return;
-                }
-                if (ip.getText().length() < 2) {
-                    JOptionPane.showMessageDialog(frame, "You need to type an IP.");
-                    return;
-                }
-                try {
-                    client=new ChatClient(name.getText());
-                    client.setGUI(this);
-                    server=(ServerInterface)Naming.lookup("rmi://"+ip.getText()+"/youchat");
-                    server.login(client);
-                    updateUsers(server.getConnected());
-                    connect.setText("Disconnect");
-                } catch(Exception e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(frame, "ERROR finding server");
-                }
-            } else {
-                updateUsers(null);
-                connect.setText("Connect");
-            }
-        }
+    /*
 
-        public void sendText() {
-
-            if (connect.getText().equals("Connect")) {
-                JOptionPane.showMessageDialog(frame, "You need to connect first.");
-                return;
-            }
-            String st=tf.getText();
-            st="[" + name.getText() + "] " + st;
-            tf.setText("");
-
-            try{
-                server.publish(st);
-            }
-            catch(Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        public void writeMsg(String st) {
-            tx.setText(tx.getText()+"\n"+st);
-        }
-
-        public void updateUsers(Vector v){
-            DefaultListModel listModel = new DefaultListModel();
-            if(v!=null) for (int i=0;i<v.size();i++){
-                try{  String tmp=((ChatClientInterface)v.get(i)).getName();
-                    listModel.addElement(tmp);
-                }catch(Exception e){e.printStackTrace();}
-            }
-            lst.setModel(listModel);
-        }
-
-        public static void main(String [] args){
-            System.out.println("Hello World !");
-            ChatGUI c=new ChatGUI();
-        }
-
-        //User Interface code.
-        public ChatGUI(){
-            frame=new JFrame("Group Chat");
-            JPanel main =new JPanel();
-            JPanel top =new JPanel();
-            JPanel cn =new JPanel();
-            JPanel bottom =new JPanel();
-            ip=new JTextField();
-            tf=new JTextField();
-            name=new JTextField();
-            tx=new JTextArea();
-            connect=new JButton("Connect");
-            JButton bt=new JButton("Send");
-            lst=new JList();
-            main.setLayout(new BorderLayout(5,5));
-            top.setLayout(new GridLayout(1,0,5,5));
-            cn.setLayout(new BorderLayout(5,5));
-            bottom.setLayout(new BorderLayout(5,5));
-            top.add(new JLabel("Your name: "));top.add(name);
-            top.add(new JLabel("Server Address: "));top.add(ip);
-            top.add(connect);
-            cn.add(new JScrollPane(tx), BorderLayout.CENTER);
-            cn.add(lst, BorderLayout.EAST);
-            bottom.add(tf, BorderLayout.CENTER);
-            bottom.add(bt, BorderLayout.EAST);
-            main.add(top, BorderLayout.NORTH);
-            main.add(cn, BorderLayout.CENTER);
-            main.add(bottom, BorderLayout.SOUTH);
-            main.setBorder(new EmptyBorder(10, 10, 10, 10) );
-            //Events
-            connect.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent e){ doConnect();   }  });
-            bt.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent e){ sendText();   }  });
-            tf.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent e){ sendText();   }  });
-
-            frame.setContentPane(main);
-            frame.setSize(600,600);
-            frame.setVisible(true);
-        }
-        JTextArea tx;
+    JTextArea tx;
         JTextField tf,ip, name;
         JButton connect;
         JList lst;
-        JFrame frame;
+
+     */
+
+    private ChatClient client;
+    private ServerInterface server;
+
+    public void doConnect() {
+
+        if (nnField.getText().length() < 2) {
+            JOptionPane.showMessageDialog(frame, "You need to type a name.");
+            return;
+        }
+        if (serverField.getText().length() < 2) {
+            JOptionPane.showMessageDialog(frame, "You need to type an IP.");
+            return;
+        }
+        try {
+            client=new ChatClient(nnField.getText());
+            Youchat youChatFrame = new Youchat();
+            youChatFrame.setVisible(true);
+            client.setGUI(youChatFrame);
+            server=(ServerInterface) Naming.lookup("rmi://"+serverField.getText()+"/youchat");
+            server.login(client);
+            youChatFrame.updateUsers(server.getConnected(), client, server, nnField.getText());
+        } catch(Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(frame, "ERROR finding server");
+        }
+    }
 }

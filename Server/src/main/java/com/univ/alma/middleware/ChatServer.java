@@ -14,7 +14,7 @@ public class ChatServer  extends UnicastRemoteObject implements ServerInterface{
 
     public boolean login(ChatClientInterface a) throws RemoteException{
         System.out.println(a.getName() + "  got connected....");
-        a.tell("You have Connected successfully.");
+        a.tell("You have Connected successfully.\n");
         publish(a.getName()+ " has just connected.");
         v.add(a);
         return true;
@@ -27,8 +27,7 @@ public class ChatServer  extends UnicastRemoteObject implements ServerInterface{
                 ChatClientInterface tmp=(ChatClientInterface)v.get(i);
                 tmp.tell(s);
             }catch(Exception e){
-                //problem with the client not connected.
-                //Better to remove it
+
             }
         }
     }

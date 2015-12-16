@@ -3,13 +3,14 @@ package com.univ.alma.middleware;
 /**
  * Created by imadhy on 16/12/15.
  */
+import java.awt.*;
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 
-public class ChatClient  extends UnicastRemoteObject implements ChatClientInterface {
+public class ChatClient extends UnicastRemoteObject implements ChatClientInterface {
 
     private String name;
-    private ChatGUI ui;
+    private Youchat ui;
     public ChatClient (String n) throws RemoteException {
         name=n;
     }
@@ -18,11 +19,12 @@ public class ChatClient  extends UnicastRemoteObject implements ChatClientInterf
         System.out.println(st);
         ui.writeMsg(st);
     }
+
     public String getName() throws RemoteException{
         return name;
     }
 
-    public void setGUI(ChatGUI t){
+    public void setGUI(Youchat t){
         ui=t ;
     }
 }
