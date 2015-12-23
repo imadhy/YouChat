@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Chat>
+    <Topic name="Generale">
+        <message username="lala">test msg 1</message>
+        <message username="jesuisfou">test msg 2</message>
+        <message username="jesuisfou">Fuck the World</message>
+    </Topic>
+    <Topic name="Je suis Un Topic">
+        <message username=""></message>
+    </Topic>
+</Chat>

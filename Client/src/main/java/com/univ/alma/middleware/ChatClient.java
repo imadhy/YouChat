@@ -3,6 +3,8 @@ package com.univ.alma.middleware;
 /**
  * Created by imadhy on 16/12/15.
  */
+import org.w3c.dom.NodeList;
+
 import java.awt.*;
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;

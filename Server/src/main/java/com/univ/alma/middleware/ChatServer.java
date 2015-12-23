@@ -3,6 +3,7 @@ package com.univ.alma.middleware;
 /**
  * Created by imadhy on 16/12/15.
  */
+
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
@@ -10,9 +11,14 @@ import java.util.*;
 public class ChatServer  extends UnicastRemoteObject implements ServerInterface{
 
     private Vector v=new Vector();
-    public ChatServer() throws RemoteException{}
 
-    public boolean login(ChatClientInterface a) throws RemoteException{
+    public ChatServer() throws RemoteException {
+
+
+    }
+
+    public boolean login(ChatClientInterface a, String topic) throws RemoteException{
+
         System.out.println(a.getName() + "  got connected....");
         a.tell("You have Connected successfully.\n");
         publish(a.getName()+ " has just connected.");

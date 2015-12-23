@@ -8,7 +8,7 @@ import java.util.*;
  */
 public interface ServerInterface extends Remote {
 
-    public boolean login (ChatClientInterface a)throws RemoteException;
+    public boolean login (ChatClientInterface a, String topic)throws RemoteException;
     public void publish (String s)throws RemoteException ;
     public Vector getConnected() throws RemoteException ;
 }
