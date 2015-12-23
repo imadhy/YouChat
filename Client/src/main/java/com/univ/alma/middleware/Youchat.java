@@ -1,15 +1,18 @@
 package com.univ.alma.middleware;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -96,6 +99,42 @@ public class Youchat extends JFrame {
     public void sendText(){
         String st=textToSend.getText();
         st="["+nickname+"]: "+st;
+
+        try {
+            final DocumentBuilder builder = factory.newDocumentBuilder();
+            final Document document= builder.parse(new File("db.xml"));
+
+            XPath xPath =  XPathFactory.newInstance().newXPath();
+            String p = "/Chat/Topic[@name='"+this.topic+"']";
+            NodeList topicTag = (NodeList) xPath.compile(p).evaluate(document, XPathConstants.NODESET);
+            final Element topicChoosed = (Element) topicTag.item(0);
+
+            Element newMessage = document.createElement("message");
+            newMessage.setTextContent(textToSend.getText());
+            newMessage.setAttribute("username", nickname);
+
+            topicChoosed.appendChild(newMessage);
+            DOMSource source = new DOMSource(document);
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            StreamResult result = new StreamResult("db.xml");
+            transformer.transform(source, result);
+        }
+        catch (final ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        } catch (TransformerConfigurationException e) {
+            e.printStackTrace();
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
+
         textToSend.setText("");
 
         try{

@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
-<Chat>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><Chat>
     <Topic name="Generale">
         <message username="lala">test msg 1</message>
         <message username="jesuisfou">test msg 2</message>
         <message username="jesuisfou">Fuck the World</message>
-    </Topic>
+    <message username="iLetItWork"/><message username="youWorkBruh">marche ou pas ?</message><message username="youWorkBruh">Worked yey ^^</message></Topic>
     <Topic name="Je suis Un Topic">
-        <message username=""></message>
-    </Topic>
+        <message username="Unknown">haha ^^</message>
+    <message username="blabla">test deuxieme topic ?</message></Topic>
 </Chat>

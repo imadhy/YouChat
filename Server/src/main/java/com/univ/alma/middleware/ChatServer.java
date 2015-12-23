@@ -28,6 +28,9 @@ public class ChatServer  extends UnicastRemoteObject implements ServerInterface{
 
     public void publish(String s) throws RemoteException{
         System.out.println(s);
+
+
+
         for(int i=0;i<v.size();i++){
             try{
                 ChatClientInterface tmp=(ChatClientInterface)v.get(i);
