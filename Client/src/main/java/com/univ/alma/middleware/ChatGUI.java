@@ -29,6 +29,8 @@ public class ChatGUI extends JFrame {
     private JLabel serverLabel;
     private JLabel sujetLabel;
     private JComboBox catList;
+    private JButton addTop;
+    private JButton reloadButton;
     private JFrame frame;
     final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
@@ -38,12 +40,56 @@ public class ChatGUI extends JFrame {
     }
 
     public ChatGUI () {
-        super("YouChat Connect to Server");
+        super("YouChat Connect");
         setContentPane(chatPanel);
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
+        loadTopics();
+
+        connectButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){ doConnect();   }  });
+        serverField.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){ doConnect();   }  });
+        addTop.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){ openAddTopic();   }  });
+        reloadButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){ reloadTopics();   }  });
+    }
+
+    private ChatClient client;
+    private ServerInterface server;
+
+    public void doConnect() {
+
+        if (nnField.getText().length() < 2) {
+            JOptionPane.showMessageDialog(frame, "Entrer un Pseudo !");
+            return;
+        }
+        if (serverField.getText().length() < 2) {
+            JOptionPane.showMessageDialog(frame, "Entrer une adresse ip !");
+            return;
+        }
+        try {
+            client=new ChatClient(nnField.getText());
+            Youchat youChatFrame = new Youchat(catList.getSelectedItem().toString());
+            youChatFrame.setVisible(true);
+            client.setGUI(youChatFrame);
+            server=(ServerInterface) Naming.lookup("rmi://"+serverField.getText()+"/youchat");
+            server.login(client);
+            youChatFrame.updateUsers(server.getConnected(), client, server, nnField.getText());
+        } catch(Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(frame, "ERREUR : Serveur non trouver !");
+        }
+    }
+
+    public void openAddTopic() {
+        TopicGUI addTopicGUI= new TopicGUI();
+    }
+
+    public void loadTopics() {
         try {
             final DocumentBuilder builder = factory.newDocumentBuilder();
             final Document document= builder.parse(new File("db.xml"));
@@ -65,37 +111,10 @@ public class ChatGUI extends JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        connectButton.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){ doConnect();   }  });
-        serverField.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){ doConnect();   }  });
     }
 
-    private ChatClient client;
-    private ServerInterface server;
-
-    public void doConnect() {
-
-        if (nnField.getText().length() < 2) {
-            JOptionPane.showMessageDialog(frame, "You need to type a name.");
-            return;
-        }
-        if (serverField.getText().length() < 2) {
-            JOptionPane.showMessageDialog(frame, "You need to type an IP.");
-            return;
-        }
-        try {
-            client=new ChatClient(nnField.getText());
-            Youchat youChatFrame = new Youchat(catList.getSelectedItem().toString());
-            youChatFrame.setVisible(true);
-            client.setGUI(youChatFrame);
-            server=(ServerInterface) Naming.lookup("rmi://"+serverField.getText()+"/youchat");
-            server.login(client);
-            youChatFrame.updateUsers(server.getConnected(), client, server, nnField.getText());
-        } catch(Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "ERROR finding server");
-        }
+    public void reloadTopics() {
+        catList.removeAllItems();
+        loadTopics();
     }
 }

@@ -7,4 +7,4 @@
     <Topic name="Je suis Un Topic">
         <message username="Unknown">haha ^^</message>
     <message username="blabla">test deuxieme topic ?</message></Topic>
-</Chat>
+<Topic name="Ocean"/><Topic name="Dev"><message username="imadhy">yo ca va ?</message></Topic></Chat>

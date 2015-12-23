@@ -2,7 +2,6 @@ package com.univ.alma.middleware;
 
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
-
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -40,7 +39,7 @@ public class Youchat extends JFrame {
         super("YouChat ~ " + topic);
         setContentPane(youChatPanel);
         pack();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
 
         this.topic = topic;
