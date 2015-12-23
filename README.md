@@ -1,5 +1,6 @@
 # YouChat
-Chat forum software build in JAVA using RMI Server
+Chat forum software build in JAVA using RMI Server.
+The history of conversations and topics are stored in an xml file "db.xml". Thus it will be easy to share it with another service or implement it with another software.
 
 Run the server first :
 
